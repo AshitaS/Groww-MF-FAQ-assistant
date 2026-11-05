@@ -30,6 +30,16 @@ CARD = {
     "mid": ("Mid Cap", "Equity", "NIFTY Midcap 150 TRI"),
 }
 
+BRAND_HTML = (
+    '<div class="brand"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">'
+    '<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00D09C"/>'
+    '<stop offset="1" stop-color="#3D6BFF"/></linearGradient></defs>'
+    '<path d="M17 2.5 5.5 7v8.3c0 7.2 4.7 13.2 11.5 16.2 6.8-3 11.5-9 11.5-16.2V7z" fill="url(#bg)"/>'
+    '<path d="m11.2 17.4 4.1 4.1 7.6-8.2" fill="none" stroke="#fff" stroke-width="2.8" '
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    '<div class="bt"><div class="b1">MF FAQ</div><div class="b2">HDFC schemes · official sources</div></div></div>'
+)
+
 if "history" not in st.session_state:   # kept in this browser session only; nothing is written to disk
     st.session_state.history = []
 if "dark" not in st.session_state:
@@ -50,32 +60,45 @@ st.markdown(
 .stApp {{ background:var(--bg); color:var(--ink); }}
 .block-container {{ max-width:900px; padding-top:1.4rem; padding-bottom:6rem; }}
 .stApp, .stApp p, .stApp span, .stApp label {{ color:var(--ink); }}
-.top {{ display:flex; justify-content:space-between; align-items:center; }}
-.brand {{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:16px; color:var(--ink); }}
-.logo {{ width:30px; height:30px; border-radius:9px; background:linear-gradient(135deg,#00D09C,#3D6BFF);
-         display:grid; place-items:center; color:#fff; font-weight:800; }}
 .pill {{ display:inline-block; font-size:12px; font-weight:600; color:var(--g); border:1px solid var(--g);
          padding:6px 12px; border-radius:999px; background:var(--glow); }}
 h1.title {{ font-size:34px; line-height:1.15; margin:18px 0 6px; padding:0; letter-spacing:-.02em; color:var(--ink); }}
 h1.title span {{ background:linear-gradient(90deg,var(--g),var(--b)); -webkit-background-clip:text; color:transparent; }}
 .sub {{ color:var(--mute) !important; font-size:15px; line-height:1.5; max-width:640px; margin-bottom:4px; }}
 .lab {{ font-size:12px; letter-spacing:.12em; color:var(--mute); text-transform:uppercase; font-weight:700; margin:22px 0 10px; }}
-/* buttons: example cards and theme toggle */
-.stButton > button {{ background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:14px;
-                      box-shadow:var(--shadow); font-weight:600; font-size:14px; line-height:1.4; width:100%;
-                      padding:.8rem 1rem; min-height:76px; text-align:left; transition:all .15s; }}
-.stButton > button:hover {{ border-color:var(--g); color:var(--g); }}
-.stButton > button p {{ color:inherit !important; }}
-.tog .stButton > button {{ min-height:0; border-radius:999px; padding:.3rem .9rem; font-size:12.5px; box-shadow:none; text-align:center; }}
-[data-testid="stForm"] {{ border:none; padding:0; background:transparent; }}
-[data-testid="stTextInput"] [data-baseweb="input"], [data-testid="stTextInput"] [data-baseweb="base-input"] {{
-    background:var(--card) !important; border:1px solid var(--line) !important; border-radius:999px !important; box-shadow:var(--shadow); }}
-[data-testid="stTextInput"] [data-baseweb="input"]:focus-within {{ border-color:var(--g) !important; box-shadow:0 0 0 3px var(--glow); }}
+.block-container {{ position:relative; }}
+.st-key-theme {{ position:absolute; top:1.3rem; right:1rem; width:auto !important; z-index:10; }}
+.st-key-theme button {{ min-height:0 !important; width:auto !important; padding:.3rem .85rem !important; border-radius:999px !important;
+    font-size:12.5px !important; box-shadow:none !important; text-align:center !important; background:var(--card); }}
+.st-key-theme button p {{ color:var(--ink) !important; }}
+.brand {{ display:flex; align-items:center; gap:11px; padding-right:110px; min-height:38px; }}
+.brand .b1 {{ font-weight:800; font-size:18px; letter-spacing:-.01em; line-height:1.1; color:var(--ink); }}
+.brand .b2 {{ font-size:11.5px; color:var(--mute); line-height:1.3; }}
+/* one seamless panel: examples + ask bar */
+.st-key-panel {{ background:var(--card); border:1px solid var(--line); border-radius:22px; padding:18px 18px 8px; box-shadow:var(--shadow); }}
+.st-key-panel .stButton > button {{ background:var(--card2); color:var(--ink); border:1px solid var(--line); border-radius:12px;
+    box-shadow:none; font-weight:600; font-size:13.5px; line-height:1.35; width:100%; padding:.65rem .9rem; min-height:0;
+    text-align:left; justify-content:flex-start; transition:all .15s; }}
+.st-key-panel .stButton > button:hover {{ border-color:var(--g); color:var(--g); background:var(--glow); }}
+.st-key-panel .stButton > button p {{ color:inherit !important; }}
+.or {{ display:flex; align-items:center; gap:12px; color:var(--mute); font-size:12px; font-weight:600; letter-spacing:.1em;
+       text-transform:uppercase; margin:14px 0 10px; }}
+.or:before, .or:after {{ content:""; flex:1; height:1px; background:var(--line); }}
+[data-testid="stForm"] {{ border:none !important; padding:0 !important; background:transparent !important; }}
+[data-testid="InputInstructions"] {{ display:none !important; }}
+[data-testid="stForm"] [data-testid="stHorizontalBlock"] {{ flex-wrap:nowrap !important; gap:10px; align-items:center; }}
+[data-testid="stForm"] [data-testid="stColumn"] {{ min-width:0 !important; width:auto !important; }}
+[data-testid="stForm"] [data-testid="stColumn"]:first-child {{ flex:1 1 0 !important; }}
+[data-testid="stForm"] [data-testid="stColumn"]:last-child {{ flex:0 0 auto !important; }}
+[data-testid="stTextInputRootElement"] {{ background:var(--card2) !important; border:1px solid var(--line) !important;
+    border-radius:999px !important; box-shadow:none !important; }}
+[data-testid="stTextInputRootElement"]:focus-within {{ border-color:var(--g) !important; box-shadow:0 0 0 3px var(--glow) !important; }}
+[data-testid="stTextInputRootElement"] [data-baseweb], [data-testid="stTextInputRootElement"] > div {{ background:transparent !important; border:none !important; box-shadow:none !important; }}
 [data-testid="stTextInput"] input {{ color:var(--ink) !important; -webkit-text-fill-color:var(--ink); background:transparent !important;
-    padding:.85rem 1.3rem; font-size:15px; }}
+    padding:.8rem 1.2rem; font-size:15px; outline:none !important; }}
 [data-testid="stTextInput"] input::placeholder {{ color:var(--mute) !important; -webkit-text-fill-color:var(--mute); opacity:1; }}
 [data-testid="stFormSubmitButton"] button {{ background:linear-gradient(135deg,var(--g),var(--b)); color:#fff; border:none; border-radius:999px;
-    min-height:3rem; font-weight:700; width:100%; box-shadow:var(--shadow); }}
+    min-height:2.9rem; padding:0 1.3rem; font-weight:700; white-space:nowrap; }}
 [data-testid="stFormSubmitButton"] button p {{ color:#fff !important; }}
 [data-testid="stFormSubmitButton"] button:hover {{ filter:brightness(1.07); color:#fff; border:none; }}
 .res {{ margin-top:18px; border-radius:20px; background:var(--card); border:1px solid var(--line); overflow:hidden; box-shadow:var(--shadow); }}
@@ -112,41 +135,34 @@ def ask(question):
 
 
 # ---- header -------------------------------------------------------------
-left, right = st.columns([5, 1])
-with left:
-    st.markdown(
-        f'<div class="top"><div class="brand"><div class="logo">₹</div>Groww · MF FAQ</div></div>'
-        f'<div style="margin-top:10px"><span class="pill">ℹ️ {html.escape(DISCLAIMER)}</span></div>',
-        unsafe_allow_html=True,
-    )
-with right:
-    st.markdown('<div class="tog">', unsafe_allow_html=True)
-    if st.button("☀️ Light" if st.session_state.dark else "🌙 Dark", key="theme"):
-        st.session_state.dark = not st.session_state.dark
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+if st.button("☀️ Light" if st.session_state.dark else "🌙 Dark", key="theme"):
+    st.session_state.dark = not st.session_state.dark
+    st.rerun()
 
 st.markdown(
-    f'<h1 class="title">Mutual fund facts, <span>straight from the source.</span></h1>'
-    f'<div class="sub">{html.escape(WELCOME)}</div>',
+    BRAND_HTML
+    + f'<div style="margin-top:12px"><span class="pill">ℹ️ {html.escape(DISCLAIMER)}</span></div>'
+    + f'<h1 class="title">Mutual fund facts, <span>straight from the source.</span></h1>'
+    + f'<div class="sub">{html.escape(WELCOME)}</div>',
     unsafe_allow_html=True,
 )
 
-# ---- ask bar (primary action), then example questions ---------------------
-st.markdown('<div class="lab">Ask a question</div>', unsafe_allow_html=True)
-with st.form("ask_form", clear_on_submit=True, border=False):
-    c_in, c_btn = st.columns([6, 1])
-    typed = c_in.text_input("Your question", placeholder="e.g. What is the minimum SIP of HDFC Mid Cap Fund?",
-                            label_visibility="collapsed")
-    sent = c_btn.form_submit_button("Ask  →")
-if sent and typed and typed.strip():
-    ask(typed)
+# ---- one panel: example questions first, then the ask bar ---------------
+with st.container(key="panel"):
+    st.markdown('<div class="lab" style="margin-top:2px">Try an example</div>', unsafe_allow_html=True)
+    cols = st.columns(len(EXAMPLES))
+    for i, (col, ex) in enumerate(zip(cols, EXAMPLES)):
+        if col.button(ex, key=f"ex{i}", use_container_width=True):
+            ask(ex)
 
-st.markdown('<div class="lab">Or try an example</div>', unsafe_allow_html=True)
-cols = st.columns(len(EXAMPLES))
-for i, (col, ex) in enumerate(zip(cols, EXAMPLES)):
-    if col.button(ex, key=f"ex{i}", use_container_width=True):
-        ask(ex)
+    st.markdown('<div class="or">or ask your own</div>', unsafe_allow_html=True)
+    with st.form("ask_form", clear_on_submit=True, border=False):
+        c_in, c_btn = st.columns([5, 1])
+        typed = c_in.text_input("Your question", placeholder="e.g. What is the minimum SIP of HDFC Mid Cap Fund?",
+                                label_visibility="collapsed")
+        sent = c_btn.form_submit_button("Ask →")
+    if sent and typed and typed.strip():
+        ask(typed)
 
 # ---- answers (newest first) ---------------------------------------------
 for q, r in reversed(st.session_state.history):
