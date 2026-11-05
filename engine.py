@@ -213,6 +213,11 @@ def answer(question, use_llm=True):
                       f"Which scheme do you mean? I cover {SCHEME_LIST}.",
                       LINKS["kim_listing"])
 
+    if not topic:  # no recognised fact asked: don't guess from stray word overlap
+        return Answer("no_answer",
+                      "I couldn't find that in my official sources. The HDFC Mutual Fund fund-documents page lists each scheme's KIM and SID.",
+                      LINKS["kim_listing"])
+
     hits = RETRIEVER.search(q, scheme=scheme, topic=topic, k=3)
     if not hits or hits[0][0] < 1.0:
         return Answer("no_answer",
