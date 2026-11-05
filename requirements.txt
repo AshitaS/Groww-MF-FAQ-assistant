@@ -1,2 +1,2 @@
-streamlit>=1.40
-anthropic>=0.40   # optional: only used if ANTHROPIC_API_KEY is set
+streamlit>=1.46
+anthropic>=0.40   
