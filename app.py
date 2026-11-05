@@ -31,13 +31,8 @@ CARD = {
 }
 
 BRAND_HTML = (
-    '<div class="brand"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">'
-    '<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00D09C"/>'
-    '<stop offset="1" stop-color="#3D6BFF"/></linearGradient></defs>'
-    '<path d="M17 2.5 5.5 7v8.3c0 7.2 4.7 13.2 11.5 16.2 6.8-3 11.5-9 11.5-16.2V7z" fill="url(#bg)"/>'
-    '<path d="m11.2 17.4 4.1 4.1 7.6-8.2" fill="none" stroke="#fff" stroke-width="2.8" '
-    'stroke-linecap="round" stroke-linejoin="round"/></svg>'
-    '<div class="bt"><div class="b1">MF FAQ</div><div class="b2">HDFC schemes · official sources</div></div></div>'
+    '<div class="brand"><div class="wm">mf<span>.</span>faq</div>'
+    '<div class="bt">Facts from official<br>HDFC · SEBI · AMFI</div></div>'
 )
 
 if "history" not in st.session_state:   # kept in this browser session only; nothing is written to disk
@@ -71,9 +66,10 @@ h1.title span {{ background:linear-gradient(90deg,var(--g),var(--b)); -webkit-ba
 .st-key-theme button {{ min-height:0 !important; width:auto !important; padding:.3rem .85rem !important; border-radius:999px !important;
     font-size:12.5px !important; box-shadow:none !important; text-align:center !important; background:var(--card); }}
 .st-key-theme button p {{ color:var(--ink) !important; }}
-.brand {{ display:flex; align-items:center; gap:11px; padding-right:110px; min-height:38px; }}
-.brand .b1 {{ font-weight:800; font-size:18px; letter-spacing:-.01em; line-height:1.1; color:var(--ink); }}
-.brand .b2 {{ font-size:11.5px; color:var(--mute); line-height:1.3; }}
+.brand {{ display:flex; align-items:center; gap:12px; padding-right:110px; min-height:38px; }}
+.brand .wm {{ font-weight:800; font-size:30px; letter-spacing:-.04em; line-height:1; color:var(--ink); }}
+.brand .wm span {{ color:var(--g); }}
+.brand .bt {{ font-size:11.5px; color:var(--mute); line-height:1.4; border-left:1px solid var(--line); padding-left:12px; }}
 /* one seamless panel: examples + ask bar */
 .st-key-panel {{ background:var(--card); border:1px solid var(--line); border-radius:22px; padding:18px 18px 8px; box-shadow:var(--shadow); }}
 .st-key-panel .stButton > button {{ background:var(--card2); color:var(--ink); border:1px solid var(--line); border-radius:12px;
