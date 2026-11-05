@@ -67,9 +67,17 @@ h1.title span {{ background:linear-gradient(90deg,var(--g),var(--b)); -webkit-ba
 .stButton > button:hover {{ border-color:var(--g); color:var(--g); }}
 .stButton > button p {{ color:inherit !important; }}
 .tog .stButton > button {{ min-height:0; border-radius:999px; padding:.3rem .9rem; font-size:12.5px; box-shadow:none; text-align:center; }}
-[data-testid="stChatInput"] {{ border-radius:999px; background:var(--card); border:1px solid var(--line); box-shadow:var(--shadow); }}
-[data-testid="stChatInput"] textarea {{ color:var(--ink); background:transparent; }}
-[data-testid="stBottom"] > div, [data-testid="stBottomBlockContainer"] {{ background:var(--bg); }}
+[data-testid="stForm"] {{ border:none; padding:0; background:transparent; }}
+[data-testid="stTextInput"] [data-baseweb="input"], [data-testid="stTextInput"] [data-baseweb="base-input"] {{
+    background:var(--card) !important; border:1px solid var(--line) !important; border-radius:999px !important; box-shadow:var(--shadow); }}
+[data-testid="stTextInput"] [data-baseweb="input"]:focus-within {{ border-color:var(--g) !important; box-shadow:0 0 0 3px var(--glow); }}
+[data-testid="stTextInput"] input {{ color:var(--ink) !important; -webkit-text-fill-color:var(--ink); background:transparent !important;
+    padding:.85rem 1.3rem; font-size:15px; }}
+[data-testid="stTextInput"] input::placeholder {{ color:var(--mute) !important; -webkit-text-fill-color:var(--mute); opacity:1; }}
+[data-testid="stFormSubmitButton"] button {{ background:linear-gradient(135deg,var(--g),var(--b)); color:#fff; border:none; border-radius:999px;
+    min-height:3rem; font-weight:700; width:100%; box-shadow:var(--shadow); }}
+[data-testid="stFormSubmitButton"] button p {{ color:#fff !important; }}
+[data-testid="stFormSubmitButton"] button:hover {{ filter:brightness(1.07); color:#fff; border:none; }}
 .res {{ margin-top:18px; border-radius:20px; background:var(--card); border:1px solid var(--line); overflow:hidden; box-shadow:var(--shadow); }}
 .res .h {{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 20px; background:var(--card2);
            border-bottom:1px solid var(--line); font-size:13px; color:var(--mute); }}
@@ -124,16 +132,21 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ---- example questions + ask bar -----------------------------------------
-st.markdown('<div class="lab">Try an example</div>', unsafe_allow_html=True)
+# ---- ask bar (primary action), then example questions ---------------------
+st.markdown('<div class="lab">Ask a question</div>', unsafe_allow_html=True)
+with st.form("ask_form", clear_on_submit=True, border=False):
+    c_in, c_btn = st.columns([6, 1])
+    typed = c_in.text_input("Your question", placeholder="e.g. What is the minimum SIP of HDFC Mid Cap Fund?",
+                            label_visibility="collapsed")
+    sent = c_btn.form_submit_button("Ask  →")
+if sent and typed and typed.strip():
+    ask(typed)
+
+st.markdown('<div class="lab">Or try an example</div>', unsafe_allow_html=True)
 cols = st.columns(len(EXAMPLES))
 for i, (col, ex) in enumerate(zip(cols, EXAMPLES)):
     if col.button(ex, key=f"ex{i}", use_container_width=True):
         ask(ex)
-
-typed = st.chat_input("Or type your own question, e.g. 'Minimum SIP of HDFC Mid Cap Fund?'")
-if typed:
-    ask(typed)
 
 # ---- answers (newest first) ---------------------------------------------
 for q, r in reversed(st.session_state.history):
