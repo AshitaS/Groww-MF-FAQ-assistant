@@ -115,3 +115,7 @@ class Regressions(unittest.TestCase):
 
     def test_scheme_only_asks_which_fact(self):
         self.assertEqual(answer("Tell me about HDFC Flexi Cap", use_llm=False).kind, "clarify")
+
+    def test_off_topic_is_not_answered(self):
+        for q in ["What is the capital of France?", "Who won the cricket match?", "tell me a joke"]:
+            self.assertEqual(answer(q, use_llm=False).kind, "no_answer", q)
